@@ -9,6 +9,8 @@ public class PlayerConroller : MonoBehaviour
 {
     private Vector2 _moveInput;
     private Rigidbody _rigidbody;
+
+    private bool _isGrounded;
     [SerializeField] private float _moveSpeed = 5.0f;
     [SerializeField] private float _jumpPlayer = 5.0f;
 
@@ -36,14 +38,12 @@ public class PlayerConroller : MonoBehaviour
 
     private void OnJump()
     {
-        if (_rigidbody != null)
-        {
             _rigidbody.AddForce(Vector3.up * _jumpPlayer, ForceMode.Impulse);
-        }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        CheckGrounded();
         Move();
     }
 
@@ -51,6 +51,11 @@ public class PlayerConroller : MonoBehaviour
     {
         Vector3 direction = new Vector3(_moveInput.x, 0f, _moveInput.y);
         transform.Translate(direction * _moveSpeed * Time.deltaTime, Space.World);
+    }
+
+    private void CheckGrounded()
+    {
+        _isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
     }
 
 
