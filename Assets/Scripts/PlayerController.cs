@@ -34,12 +34,11 @@ public class PlayerConroller : MonoBehaviour
         _moveInput = value.Get<Vector2>();
     }
 
-    // Событие от PlayerInput
     private void OnJump()
     {
         if (_rigidbody != null)
         {
-            _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector3.up * _jumpPlayer, ForceMode.Impulse);
         }
     }
 
@@ -48,11 +47,10 @@ public class PlayerConroller : MonoBehaviour
         Move();
     }
 
-    // Microsoft Style: Выносим логику в отдельные методы с PascalCase
     private void Move()
     {
         Vector3 direction = new Vector3(_moveInput.x, 0f, _moveInput.y);
-        transform.Translate(direction * speed * Time.deltaTime, Space.World);
+        transform.Translate(direction * _moveSpeed * Time.deltaTime, Space.World);
     }
 
 
