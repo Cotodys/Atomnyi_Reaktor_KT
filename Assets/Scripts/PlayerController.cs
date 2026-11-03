@@ -45,6 +45,11 @@ public class PlayerConroller : MonoBehaviour
     {
         CheckGrounded();
         Move();
+        
+    }
+    private void LateUpdate()
+    {
+        transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
     }
 
     private void Move()
