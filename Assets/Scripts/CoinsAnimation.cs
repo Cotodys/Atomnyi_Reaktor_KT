@@ -9,6 +9,10 @@ public class CoinsAnimation : MonoBehaviour
     [SerializeField] private float _hoverAmplitude = 0.25f;
     [SerializeField] private float _hoverSpeed = 2f;
 
+    [Header("Spawn Bounds (3D)")]
+    [SerializeField] private Vector2 _xBounds = new Vector2(-10f, 10f);
+    [SerializeField] private Vector2 _zBounds = new Vector2(-10f, 10f);
+
     private Vector3 _startPosition;
 
     void Start()
@@ -28,5 +32,14 @@ public class CoinsAnimation : MonoBehaviour
     {
         _startPosition = position;
         transform.position = position;
+    }
+
+    public void RespawnRandomly()
+    {
+        float randomX = Random.Range(_xBounds.x, _xBounds.y);
+        float randomZ = Random.Range(_zBounds.x, _zBounds.y);
+
+        Vector3 newPos = new Vector3(randomX, _startPosition.y, randomZ);
+        SetStartPosition(newPos);
     }
 }

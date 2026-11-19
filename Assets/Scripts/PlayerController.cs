@@ -5,8 +5,10 @@ using UnityEngine.InputSystem;
 
 
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerConroller : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
+    private int _coins = 0;
+    public static event Action<int> CoinGet;
     private Vector2 _moveInput;
     private Rigidbody _rigidbody;
 
@@ -52,6 +54,21 @@ public class PlayerConroller : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
     }
 
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Coin")) // CompareTag работает быстрее и безопаснее, чем col.tag ==
+        {
+            _coins += 1;
+            CoinGet?.Invoke(_coins);
+
+            // Вместо Destroy(col.gameObject) вызываем перемещение монетки:
+            if (col.TryGetComponent(out CoinsAnimation coin))
+            {
+                coin.RespawnRandomly();
+            }
+        }
+    }
+
     private void Move()
     {
         Vector3 direction = new Vector3(_moveInput.x, 0f, _moveInput.y);
@@ -62,7 +79,4 @@ public class PlayerConroller : MonoBehaviour
     {
         _isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
     }
-
-
-
 }
