@@ -8,13 +8,13 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private int _coins = 0;
-    public static event Action<int> CoinGet;
     private Vector2 _moveInput;
     private Rigidbody _rigidbody;
 
     private bool _isGrounded;
     [SerializeField] private float _moveSpeed = 5.0f;
     [SerializeField] private float _jumpPlayer = 5.0f;
+    [SerializeField] public SphereCollider TriggetSpherePlayer;
 
     public float Speed
     {
@@ -28,9 +28,24 @@ public class PlayerController : MonoBehaviour
         set => _jumpPlayer = value;
     }
 
+    private void OnEnable()
+    {
+        CoinCollector.CoinGet += OnCoinGet;
+    }
+
+    private void OnDisable()
+    {
+        CoinCollector.CoinGet -= OnCoinGet;
+    }
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+    }
+
+    private void OnCoinGet(int coins)
+    {
+        _coins = coins;
     }
 
     private void OnWASD(InputValue value)
@@ -52,21 +67,6 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
-    }
-
-    private void OnTriggerEnter(Collider col)
-    {
-        if (col.CompareTag("Coin")) // CompareTag работает быстрее и безопаснее, чем col.tag ==
-        {
-            _coins += 1;
-            CoinGet?.Invoke(_coins);
-
-            // Вместо Destroy(col.gameObject) вызываем перемещение монетки:
-            if (col.TryGetComponent(out CoinsAnimation coin))
-            {
-                coin.RespawnRandomly();
-            }
-        }
     }
 
     private void Move()

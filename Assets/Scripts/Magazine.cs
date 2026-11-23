@@ -18,20 +18,19 @@ public class Magazine : MonoBehaviour
     [SerializeField] private float _animationDuration = 0.25f;
 
     private bool _isMagnetActive = false;
+    private float _radius = 1.1f;
     private Vector3 originalScale;
     private Coroutine punchCoroutine;
 
+    public bool IsMagnetActive => _isMagnetActive;
+    public float Radius => _radius;
 
     void Start()
     {
         originalScale = transform.localScale;
 
-        if (_buttonImage != null)
-        {
             _buttonImage.color = _inactiveColor;
-        }
     }
-
 
     public void BuyMagnetUpgrade()
     {
@@ -49,7 +48,17 @@ public class Magazine : MonoBehaviour
         punchCoroutine = StartCoroutine(PunchScaleRoutine());
 
         Debug.Log($"Магнит активен: {_isMagnetActive}");
+/*
+        if (_inactiveColor )
+        {
+
+        }*/
     }
+
+
+
+
+
 
     private IEnumerator PunchScaleRoutine() //корутину сделала полностью ИИ.
     {

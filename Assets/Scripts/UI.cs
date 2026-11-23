@@ -8,12 +8,12 @@ public class UI : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.CoinGet += OnCoinGet;
+        CoinCollector.CoinGet += OnCoinGet;
     }
 
     private void OnDisable()
     {
-        PlayerController.CoinGet -= OnCoinGet;
+        CoinCollector.CoinGet -= OnCoinGet;
     }
 
     private void OnCoinGet(int coins)
